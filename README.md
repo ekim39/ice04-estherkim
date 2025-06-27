@@ -8,4 +8,4 @@ I used this website (https://www.bootdey.com/snippets/view/Chat-box) as a templa
 
 ### Instructions
 
-- To run the application, enter the command "npm run build" to build the application. Then, enter "node server.js" in one terminal to start the server locally. You may access the website by entering the link "http://localhost:3050/". You may open the link on different browsers/tabs to simulate different users.
+- To run the application, enter the foler "vite-project" using the command "cd vite-project". Then, enter the command "npm run build" to build the application. Then, enter "node server.js" in one terminal to start the server locally. You may access the website by entering the link "http://localhost:3050/". You may open the link on different browsers/tabs to simulate different users.
