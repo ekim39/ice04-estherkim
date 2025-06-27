@@ -1,10 +1,10 @@
-# ICE 04: Websockets
+# ICE 04: Websockets - Esther Kim
 
 In this activity, you will work to build a simple websockets application
 
 ### Instructions
 
-1. Decide whether you want to work alone or with others in this ISP. If you are working with others, make sure to list all of your group members in your README.
+- To run the application, enter the command "node server.js" in one terminal to start the server side. Then, enter "npm run dev" in another to start the client side". You may open the link on different browsers/tabs to simulate different users.
 
 2. Implement the basic websockets setup demo from the [sockets guide](https://github.com/jmcuneo/cs4241-guides/blob/master/using.sockets.md). Make sure that is up and running correctly before proceeding to the next step.
 
