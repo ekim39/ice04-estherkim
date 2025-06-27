@@ -10,14 +10,22 @@ import http from 'http'
 import ViteExpress from 'vite-express'
 import { WebSocketServer } from 'ws'
 
-const app = express()
+import path from 'path';
+import { fileURLToPath } from 'url';
+import { dirname } from 'path';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+const distDir = path.join(__dirname, 'dist');
+
+const app = express();
+app.use(express.static(distDir));
 
 const server = http.createServer( app ),
       socketServer = new WebSocketServer({ server }),
       clients = []
 
-let activeUsers = 0,
-    likeCounter = []
+let activeUsers = 0
 
 socketServer.on( 'connection', client => {
   console.log( 'connect!' )
@@ -30,7 +38,7 @@ socketServer.on( 'connection', client => {
     
   // when the server receives a message from this client...
   client.on( 'message', msg => {
-	  // send msg to every client EXCEPT the one who originally sent it
+	// send msg to every client EXCEPT the one who originally sent it
     clients.forEach( c => { if( c !== client ) c.send( msg ) })
     clients.forEach(c => {c.send(JSON.stringify({ count: activeUsers }))})
   })

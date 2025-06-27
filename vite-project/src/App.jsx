@@ -1,6 +1,8 @@
 import { useState, useEffect, useRef } from 'react'
 import './App.css'
 
+// I used this website as a template to style the chat app https://www.bootdey.com/snippets/view/Chat-box
+
 function App() {
   const [msgs, setMsgs] = useState([]); // array that holds onto all the messages
   const ws = useRef(null); // holds onto reference of ws (connection)
@@ -13,7 +15,7 @@ function App() {
 
     // when connection opens, send this message
     ws.current.onopen = async msg => {
-      ws.current.send( 'a new client has connected.' );
+      ws.current.send( 'A new user has connected.' );
     }
 
     // adds msg to end of msgs array
@@ -32,7 +34,7 @@ function App() {
       }
 
       try {
-        data = JSON.parse(msg.data);
+        data = JSON.parse(message);
         isJSON = true;
       } catch (e) {
         isJSON = false;
@@ -40,9 +42,11 @@ function App() {
       
       if (isJSON && data.count !== undefined) {
         setCounter(data.count);
+      } else if (!isJSON) {
+        setMsgs(prevMsgs => [...prevMsgs, {username: '', txt: message}]);
       } else {
         // adding on message to the messages we have saved.
-        setMsgs(prevMsgs => [...prevMsgs, `${message}`]);
+        setMsgs(prevMsgs => [...prevMsgs, {username: data.username, txt: data.txt}]);
       }
 
     }
@@ -54,15 +58,15 @@ function App() {
 
   // sends message that is typed into input box when key "Enter" is hit
   const send = function(event) {
-    if (event.key === 'Enter') {
+    if (event.type === 'click' || event.key === 'Enter') {
       const txt = document.getElementById('message').value;
       // adds new message from this client onto the array msgs
       if (username !== '') {
-        ws.current.send(`${username}: ${txt}`);
-        setMsgs(prevMsgs => [...prevMsgs, `${username} (me): ${txt}`]);
+        ws.current.send(JSON.stringify({username: username, txt: txt}));
+        setMsgs(prevMsgs => [...prevMsgs, {username: `${username} (me)`, txt: txt}]);
       } else {
-        ws.current.send(`them: ${txt}`);
-        setMsgs(prevMsgs => [...prevMsgs, `me: ${txt}`]);
+        ws.current.send(JSON.stringify({username: 'guest', txt: txt}));
+        setMsgs(prevMsgs => [...prevMsgs, {username: 'me', txt: txt}]);
       }
     }
   }
@@ -74,25 +78,64 @@ function App() {
 
   return (
     <>
-      <h1>Chat Together</h1>
-      <p>This is a place where you can talk with all other online users and like their message.</p>
-      <h2>Active Users: <span id='activeUserCounter'>{counter}</span></h2>
-      <div>
-        <label htmlFor='username'>Want to set a username?:</label>
-        <input type="text" id='username' />
-        <button id="sending" onClick={ e => sendUser()}>Submit</button>
-      </div>
-      <br />
-      <div>
-        <label htmlFor='message'>Message:</label>
-        <input type="text" id='message' onKeyUp={send} />
-      </div>
-      
-      <div id='messages'>
-        {msgs.map((msg, index) => (
-          <h3 key={index}>{msg}</h3>
-        ))}
-      </div>
+
+      <div className="container bootstrap snippets bootdey">
+          <div className="row">
+              <div className="col-md-12 col-md-offset-4">
+                  <div className="portlet portlet-default">
+
+
+                  <div className="portlet-heading">
+                    <div className="portlet-title">
+                        <h4><i className="fa fa-circle text-green"></i> {username === ''? 'Guest' : username}</h4>
+                    </div>
+                    <div className="clearfix"></div>
+                  </div>
+                  
+                  <div className='portlet-purple'>
+                    <div className='portlet-heading'>
+                      <h1>Chat Together</h1>
+                      <p>This is a place where you can talk with all other online users and like their message.</p>
+                      <h2>Active Users: <span id='activeUserCounter'>{counter}</span></h2>
+                      
+                      <div>
+                        <label htmlFor='username'>Want to set a username?:</label>
+                        <input type="text" id='username' />
+                        <button id="sending" onClick={ e => sendUser()} className='btn-white'>Submit</button>
+                      </div>
+                      <br />
+                    </div>
+                  </div>
+
+                  <div>
+                  <div className="portlet-body chat-widget" style={{overflowY: 'auto', width: 'auto', height: '300px'}}>
+                    {msgs.map((msg, index) => (
+                      <div key={index}>
+                        <h4>{msg.username !== ''? msg.username : 'SYSTEM MESSAGE'}</h4>
+                        <p>{msg.txt}</p>
+                      </div>
+                    ))}
+                    
+                  
+                  </div>
+                  </div>
+
+                    <div className="portlet-footer">
+                      <div>
+                        <label htmlFor='message'>Message:</label>
+                        <br />
+                        <input type="text" id='message' onKeyUp={send} />
+                        <button id="user" onClick={send} className='btn-white'>Send</button>
+                      </div>
+                      
+                    </div>
+                
+                </div>
+              </div>
+          </div>
+      </div>    
+
+
     </>
   )
 }

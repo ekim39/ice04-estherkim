@@ -1,19 +1,11 @@
 # ICE 04: Websockets - Esther Kim
 
-FOr ICE 04, I built a very simple (websockets) messaging application where online users can chat with all other users online and set your own username for the session.
+FOr ICE 04, I built a very simple (websockets) messaging application where online users can chat with all other users online and set their own username for the session. Users will be notified when other users join and there is a counter that keeps track of how many live users there are.
 
-One challenge I faced was converting Svelte to React when I was following the demo. The demo was in Svelte, but converting it to React was difficult because I wasn't sure how converting between the two languages would affect the way the application ran. I had to make some edits to the server.js and App.jsx files to handle the connections and messages sent properly.
+One challenge I faced was converting Svelte to React when I was following the demo. The demo was in Svelte, but converting it to React was difficult because I wasn't sure how converting between the two languages would affect the way the application ran. I had to make some edits to the server.js and App.jsx files to handle the connections and messages sent properly. Another challenge was trying to make sure the format of the data I was sending was consistent so that the same code can be used by all clients, but rendered slightly differently depending on their variables.
+
+I used this website (https://www.bootdey.com/snippets/view/Chat-box) as a template for my chat box styling. I used the code provided in App.css and used the styling to style the HTML elements in App.jsx.
 
 ### Instructions
 
-- To run the application, enter the command "node server.js" in one terminal to start the server side. Then, enter "npm run dev" in another to start the client side". You may open the link on different browsers/tabs to simulate different users.
-
-2. Implement the basic websockets setup demo from the [sockets guide](https://github.com/jmcuneo/cs4241-guides/blob/master/using.sockets.md). Make sure that is up and running correctly before proceeding to the next step.
-
-3. Using the demo as a starting point, create a simple networked web application. Make sure the application can handle more than one person. If you're completing this assignment by yourself, find a friend to test it with you, or try to connect from a second computer.
-
-4. Write up a README file that includes the names of all of your group members and a description of what the application does. Be sure to list anything a user might need to know before using your application. Also describe any challenges you faced.
-
-5. Submit your final assignment by initiating a pull request against this repo.
-
-**NOTE:** The demo uses Svelte, but you are welcome to switch to a different UI framework if you prefer.
+- To run the application, enter the command "npm run build" to build the application. Then, enter "node server.js" in one terminal to start the server locally. You may access the website by entering the link "http://localhost:3050/". You may open the link on different browsers/tabs to simulate different users.
