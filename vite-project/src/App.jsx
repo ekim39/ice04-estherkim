@@ -5,6 +5,7 @@ function App() {
   const [msgs, setMsgs] = useState([]); // array that holds onto all the messages
   const ws = useRef(null); // holds onto reference of ws (connection)
   const[counter, setCounter] = useState(0);
+  const[username, setUsername] = useState('');
     
   useEffect(() => {
     // create one connection instead of creating new ones each time
@@ -41,7 +42,7 @@ function App() {
         setCounter(data.count);
       } else {
         // adding on message to the messages we have saved.
-        setMsgs(prevMsgs => [...prevMsgs, `them: ${message}`]);
+        setMsgs(prevMsgs => [...prevMsgs, `${message}`]);
       }
 
     }
@@ -54,11 +55,21 @@ function App() {
   // sends message that is typed into input box when key "Enter" is hit
   const send = function(event) {
     if (event.key === 'Enter') {
-      const txt = document.querySelector('input').value
-      ws.current.send( txt )
+      const txt = document.getElementById('message').value;
       // adds new message from this client onto the array msgs
-      setMsgs(prevMsgs => [...prevMsgs, `me: ${txt}`])
+      if (username !== '') {
+        ws.current.send(`${username}: ${txt}`);
+        setMsgs(prevMsgs => [...prevMsgs, `${username} (me): ${txt}`]);
+      } else {
+        ws.current.send(`them: ${txt}`);
+        setMsgs(prevMsgs => [...prevMsgs, `me: ${txt}`]);
+      }
     }
+  }
+
+  const sendUser = function(event) {
+    const txt = document.getElementById('username').value;
+    setUsername(txt);
   }
 
   return (
@@ -66,7 +77,16 @@ function App() {
       <h1>Chat Together</h1>
       <p>This is a place where you can talk with all other online users and like their message.</p>
       <h2>Active Users: <span id='activeUserCounter'>{counter}</span></h2>
-      <input type="text" onKeyUp={send} />
+      <div>
+        <label htmlFor='username'>Want to set a username?:</label>
+        <input type="text" id='username' />
+        <button id="sending" onClick={ e => sendUser()}>Submit</button>
+      </div>
+      <br />
+      <div>
+        <label htmlFor='message'>Message:</label>
+        <input type="text" id='message' onKeyUp={send} />
+      </div>
       
       <div id='messages'>
         {msgs.map((msg, index) => (
