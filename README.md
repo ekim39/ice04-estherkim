@@ -1,6 +1,8 @@
 # ICE 04: Websockets - Esther Kim
 
-In this activity, you will work to build a simple websockets application
+FOr ICE 04, I built a very simple (websockets) messaging application where online users can chat with all other users online and set your own username for the session.
+
+One challenge I faced was converting Svelte to React when I was following the demo. The demo was in Svelte, but converting it to React was difficult because I wasn't sure how converting between the two languages would affect the way the application ran. I had to make some edits to the server.js and App.jsx files to handle the connections and messages sent properly.
 
 ### Instructions
 
